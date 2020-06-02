@@ -1,12 +1,13 @@
 import React, { ReactElement } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { LoginValues, ErrorMessage } from '../../shared';
-import { FormikErrors } from 'formik';
+import { FormikErrors, FormikTouched } from 'formik';
 
 interface LoginFormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  touched:FormikTouched<LoginValues>;
   isSubmitting: boolean;
   errors: FormikErrors<LoginValues>;
 }
@@ -14,6 +15,7 @@ interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps): ReactElement => {
   const {
     handleSubmit,
+    touched: { userName: userNameTouched, password: passwordTouched },
     handleChange,
     handleBlur,
     isSubmitting,
@@ -30,7 +32,7 @@ export const LoginForm = (props: LoginFormProps): ReactElement => {
           type="text"
           placeholder="Enter username"
         />
-        {userName && <ErrorMessage>{userName}</ErrorMessage>}
+        {userNameTouched && userName && <ErrorMessage>{userName}</ErrorMessage>}
       </Form.Group>
       <Form.Group>
         <Form.Label>Password</Form.Label>
@@ -41,7 +43,7 @@ export const LoginForm = (props: LoginFormProps): ReactElement => {
           onBlur={handleBlur}
           placeholder="Enter Password"
         />
-        {password && <ErrorMessage>{password}</ErrorMessage>}
+        {passwordTouched && password && <ErrorMessage>{password}</ErrorMessage>}
       </Form.Group>
       <Button variant="primary" type="submit" disabled={isSubmitting}>
         Login

@@ -41,12 +41,13 @@ export const Login = (): React.ReactElement => {
         })}
       >
         {({
-          handleSubmit, errors, handleBlur, handleChange
+          handleSubmit, errors, handleBlur, touched, handleChange
         }) => (
           <LoginForm
             errors={errors}
             handleSubmit={handleSubmit}
             handleBlur={handleBlur}
+            touched= {touched}
             handleChange={handleChange}
             isSubmitting={isSubmitting}
           />

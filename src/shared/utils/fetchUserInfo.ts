@@ -1,3 +1,4 @@
+import { getLoginAPIURL } from './../api/getLoginAPIURL';
 import { AUTHENTICATION_FAIL, ERROR_LOGIN } from './../constants/Constants';
 import { Action } from '../model/SharedTypes';
 import { loginFailed, loginSuccess, submitting } from './../../actions/LoginActions';
@@ -10,9 +11,7 @@ export const fetchUserInfo = async (
   dispatch(submitting());
   try {
     const { userName, password } = loginValues;
-    const result = await fetch(
-      `http://swapi.dev/api/people?search=${userName}`
-    );
+    const result = await fetch(getLoginAPIURL(userName));
     const data = await result.json();
     const { count, results } = data;
     if (count === 1) {
