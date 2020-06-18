@@ -1,27 +1,37 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
-import { Header, HeaderProps } from './Header';
+import { getElementByAttr } from '../../shared';
+import { Header } from './Header';
+
 
 const getProps = (isAuthenticated = false) => ({
   isAuthenticated,
   onLogout: jest.fn()
 });
 
-type ShallowWrapperType = ShallowWrapper<
-  any,
-  Readonly<any>,
-  React.Component<HeaderProps, any, any>
->;
+const mockHistory = {
+  history: {
+    push: jest.fn()
+  }
+};
+
+// jest.mock('react-router-dom', ()=>{
+//   const reactRouter = jest.requireActual('react-router-dom');
+//   return {
+//     ...reactRouter,
+//     useHistory: jest.fn().mockImplementation(()=>mockHistory)
+//   };
+// });
 
 describe('Header', () => {
   const headerProps = getProps(true);
-  const wrapper: ShallowWrapperType = shallow(<Header {...getProps(true)} />);
-  beforeEach(()=>{
+  const wrapper = shallow(<Header {...headerProps} />);
+  const element = getElementByAttr(wrapper, "[test-id='logout-icon']");
+  beforeEach(() => {
     wrapper.setProps(headerProps);
   });
   test('renders learn Header correctly if user is authenticated ', () => {
-    expect(wrapper.find("[test-id='logout-icon']").exists()).toBe(true);
+    expect(element.exists()).toBe(true);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -31,11 +41,13 @@ describe('Header', () => {
   });
 
   test('button should have correct text', () => {
-    expect(wrapper.find('button').text()).toBe('Swapi React');
+    const headerButton = getElementByAttr(wrapper, 'button');
+    expect(headerButton.text()).toBe('Swapi React');
   });
 
   test('onlogout should be called on click of logout icon', () => {
-    wrapper.find("[test-id='logout-icon']").simulate('click');
+    element.simulate('click');
     expect(headerProps.onLogout).toHaveBeenCalled();
+    // expect(mockHistory.history.push).toHaveBeenCalled();
   });
 });
