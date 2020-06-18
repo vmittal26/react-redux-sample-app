@@ -22,7 +22,7 @@ export const LoginForm = (props: LoginFormProps): ReactElement => {
     errors: { userName, password }
   } = props;
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} autoComplete='false'>
       <Form.Group>
         <Form.Label>User name</Form.Label>
         <Form.Control

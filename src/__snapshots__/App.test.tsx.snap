@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders learn app correctly if user is authenticated 1`] = `
+<Fragment>
+  <Connect(Header) />
+  <Switch>
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(LoginPage)",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/home"
+    />
+    <Redirect
+      to="/"
+    />
+  </Switch>
+</Fragment>
+`;
+
+exports[`renders learn app correctly if user is not authenticated 1`] = `
+<Fragment>
+  <Connect(Header) />
+  <Switch>
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(LoginPage)",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/"
+    />
+    <Redirect
+      to="/"
+    />
+  </Switch>
+</Fragment>
+`;

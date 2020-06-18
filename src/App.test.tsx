@@ -1,9 +1,16 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+// import { render } from '@testing-library/react';
+import { App } from './App';
+import { shallow } from 'enzyme';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+const mockDispatch = jest.fn();
+
+test('renders learn app correctly if user is authenticated', () => {
+  const wrapper = shallow(<App isAuthenticated dispatch={mockDispatch}/>);
+  expect(wrapper).toMatchSnapshot();
+});
+
+test('renders learn app correctly if user is not authenticated', () => {
+  const wrapper = shallow(<App isAuthenticated = {false} dispatch={mockDispatch}/>);
+  expect(wrapper).toMatchSnapshot();
 });

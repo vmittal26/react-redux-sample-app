@@ -1,7 +1,6 @@
-import { SUBMITTING, LOGIN_SUCCESS, LOGIN_FAIL } from './../shared/constants/Constants';
-import { Action } from '../shared';
-import { LoginState } from '../shared/model/LoginTypes';
-
+import { Action } from '../../shared';
+import { LoginState } from '../../shared/model/LoginTypes';
+import * as actionTypes from '../actions/actionTypes';
 
 export const initialState:LoginState = {
   isAuthenticated: false,
@@ -13,20 +12,20 @@ export const initialState:LoginState = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const loginReducer = (state = initialState, { type, payload }:Action<any>):LoginState => {
   switch (type) {
-    case SUBMITTING: {
+    case actionTypes.SUBMITTING: {
       return {
         ...state,
         isSubmitting: true
       };
     }
-    case LOGIN_SUCCESS: {
+    case actionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
         isAuthenticated: true,
         isSubmitting: false
       };
     }
-    case LOGIN_FAIL: {
+    case actionTypes.LOGIN_FAIL: {
       const { errorMessage } = payload;
       return {
         ...state,
@@ -34,6 +33,13 @@ export const loginReducer = (state = initialState, { type, payload }:Action<any>
         isError: true,
         isSubmitting: false,
         errorMessage
+      };
+    }
+
+    case actionTypes.ON_LOGOUT: {
+      return {
+        ...initialState,
+        isAuthenticated: false
       };
     }
     default:

@@ -1,29 +1,39 @@
-import React, { useContext, useReducer } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
-
-import Alert from 'react-bootstrap/Alert';
-import { object, string } from 'yup';
+/* eslint-disable no-console */
 import { Formik } from 'formik';
+import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import { connect, ConnectedProps } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { object, string } from 'yup';
+
 import { LoginForm } from '../../components';
-import { initialState, loginReducer } from '../../reducers/loginReducer';
-import { GlobalContext, LoginValues } from '../../shared';
-import { fetchUserInfo } from '../../shared/utils/fetchUserInfo';
+import { AppState, LoginValues } from '../../shared';
+import { onLogin } from '../../store';
 import { LoginContainer } from './LoginCss';
 
-export const Login = (): React.ReactElement => {
-  const { userContext } = useContext(GlobalContext);
-  const history = useHistory();
-  const [state, dispatch] = useReducer(loginReducer, initialState);
-  const onLogin = (values: LoginValues) => fetchUserInfo(values, dispatch);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>)=>({
+  onSubmitLoginForm: (values:LoginValues)=> dispatch(onLogin(values))
+});
+
+const mapStateToProps = ({ loginState }:AppState)=>({
+  ...loginState
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+const LoginPage = (props:PropsFromRedux): React.ReactElement => {
   const {
-    isAuthenticated, isError, isSubmitting, errorMessage
-  } = state;
-  // set usrr is  authenticated to true in context
-  userContext.setIsAuthenticated(isAuthenticated);
-  React.useEffect(() => {
-    // set user  is  authenticated to false in context on coming back to login page
-    userContext.setIsAuthenticated(false);
-  }, [history, userContext]);
+    onSubmitLoginForm, isError, isAuthenticated, isSubmitting, errorMessage
+  } = props;
+
+  const onSubmit = (values:LoginValues):void=> {
+    onSubmitLoginForm(values);
+  };
 
   let login = (
     <LoginContainer>
@@ -34,7 +44,7 @@ export const Login = (): React.ReactElement => {
       )}
       <Formik
         initialValues={{ userName: '', password: '' }}
-        onSubmit={onLogin}
+        onSubmit={onSubmit}
         validationSchema={object().shape({
           userName: string().required('Please Enter User Name'),
           password: string().required('Please Enter Password')
@@ -56,7 +66,10 @@ export const Login = (): React.ReactElement => {
     </LoginContainer>
   );
   if (isAuthenticated) {
-    login = <Redirect to="/home" />;
+    login = <Redirect to='/home' />;
   }
   return login;
 };
+
+
+export const Login = connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders learn Header correctly if user is authenticated  1`] = `
+<styled.div>
+  <button
+    className="home-button"
+    onClick={[Function]}
+  >
+    Swapi React
+  </button>
+  <img
+    alt="swapi react"
+    onClick={[MockFunction]}
+    src="logout_blue.svg"
+    test-id="logout-icon"
+  />
+</styled.div>
+`;
+
+exports[`Header renders learn Header correctly if user is not authenticated  1`] = `
+<styled.div>
+  <button
+    className="home-button"
+    onClick={[Function]}
+  >
+    Swapi React
+  </button>
+</styled.div>
+`;

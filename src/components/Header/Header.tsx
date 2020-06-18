@@ -1,37 +1,43 @@
-import React, { useContext } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Action, Dispatch } from 'redux';
 
 import logo from '../../images/logout_blue.svg';
-import { GlobalContext } from '../../shared';
+import { AppState } from '../../shared';
+import { logOut } from '../../store';
 import HeaderWrapper from './HeaderJss';
+
+
+const mapStateToProps = ({ loginState }: AppState) => ({
+  isAuthenticated: loginState.isAuthenticated
+});
+
+const mapDispatchToProps = (dispatch:Dispatch<Action<any>>)=>({
+  onLogout: ()=>dispatch(logOut())
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export type HeaderProps = ConnectedProps<typeof connector>;
 
 
 /**
  * Header Component
  */
-export const Header: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const { userContext } = useContext(GlobalContext);
+export const Header: React.FC<HeaderProps> = ({ isAuthenticated, onLogout }:HeaderProps) => {
   const history = useHistory();
-
-  const onLogout = () => {
-    userContext.setIsAuthenticated(false);
+  const onClickLogout = () => {
+    onLogout();
     history.push('/');
   };
 
-  React.useEffect(() => {
-    const unlisten = history.listen(() => {
-      // on coming back to login page authentication flag should be set to false
-      setIsLoggedIn(userContext.getIsAuthenticated());
-    });
-
-    return unlisten;
-  }, [history, userContext]);
-
   return (
     <HeaderWrapper>
-      <button className='home-button' onClick={onLogout}>Swapi React</button>
-      {isLoggedIn && <img onClick={onLogout} src={logo} alt='swapi react'></img>}
+      <button className='home-button' onClick={onClickLogout}>Swapi React</button>
+      {isAuthenticated && <img test-id='logout-icon' onClick={onLogout} src={logo} alt='swapi react'></img>}
     </HeaderWrapper>
   );
 };
+export default connector(Header);
