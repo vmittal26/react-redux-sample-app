@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { getElementByAttr } from '../../shared';
+
 import { Header } from './Header';
 
 
@@ -10,18 +11,12 @@ const getProps = (isAuthenticated = false) => ({
 });
 
 const mockHistory = {
-  history: {
-    push: jest.fn()
-  }
+  push: jest.fn()
 };
 
-// jest.mock('react-router-dom', ()=>{
-//   const reactRouter = jest.requireActual('react-router-dom');
-//   return {
-//     ...reactRouter,
-//     useHistory: jest.fn().mockImplementation(()=>mockHistory)
-//   };
-// });
+jest.mock('react-router-dom', () => ({
+  useHistory: () => mockHistory
+}));
 
 describe('Header', () => {
   const headerProps = getProps(true);
@@ -48,6 +43,6 @@ describe('Header', () => {
   test('onlogout should be called on click of logout icon', () => {
     element.simulate('click');
     expect(headerProps.onLogout).toHaveBeenCalled();
-    // expect(mockHistory.history.push).toHaveBeenCalled();
+    // expect(mockHistory.push).toHaveBeenCalled();
   });
 });
