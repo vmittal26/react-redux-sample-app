@@ -5,12 +5,13 @@ exports[`Header renders learn Header correctly if user is authenticated  1`] = `
   <button
     className="home-button"
     onClick={[Function]}
+    test-id="home-button"
   >
     Swapi React
   </button>
   <img
     alt="swapi react"
-    onClick={[MockFunction]}
+    onClick={[Function]}
     src="logout_blue.svg"
     test-id="logout-icon"
   />
@@ -22,6 +23,7 @@ exports[`Header renders learn Header correctly if user is not authenticated  1`]
   <button
     className="home-button"
     onClick={[Function]}
+    test-id="home-button"
   >
     Swapi React
   </button>

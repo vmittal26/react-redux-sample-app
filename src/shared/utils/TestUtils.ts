@@ -8,5 +8,5 @@ type ShallowWrapperType = ShallowWrapper<
 > | ReactWrapper;
 
 export const getElementByAttr = (wrapper :ShallowWrapperType, attr:string):ShallowWrapperType=>{
-  return wrapper.find(attr);
+  return wrapper.find(`[test-id='${attr}']`);
 };
