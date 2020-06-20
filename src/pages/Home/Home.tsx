@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
-
-import { Spinner, Form } from 'react-bootstrap';
-import { PlanetItem, Message } from '../../components';
-import { useSearchPlanets, NO_PLANETS_FOUND } from '../../shared';
+import { Form, Spinner } from 'react-bootstrap';
+import { Message, PlanetItem } from '../../components';
+import { NO_PLANETS_FOUND } from '../../shared';
+import useSearchPlanets from '../../shared/hooks/useSearchPlanets';
 import { HomeContainer, PlanetBox, SearchBox } from './HomeCss';
+
 
 /**
  * Main page to show planets based on search

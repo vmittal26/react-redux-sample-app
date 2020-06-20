@@ -6,12 +6,12 @@ import { getElementByAttr } from '../../shared';
 import { Header } from './Header';
 
 
-jest.mock('react-router-dom', () => ({
-  useHistory: jest.fn(() => ({
-    push: jest.fn(),
-    goBack: jest.fn()
-  }))
-}));
+// jest.mock('react-router-dom', () => ({
+//   useHistory: jest.fn(() => ({
+//     push: jest.fn(),
+//     goBack: jest.fn()
+//   }))
+// }));
 
 const getProps = (isAuthenticated = false) => ({
   isAuthenticated,
