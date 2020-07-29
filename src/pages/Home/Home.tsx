@@ -5,7 +5,6 @@ import { NO_PLANETS_FOUND } from '../../shared';
 import useSearchPlanets from '../../shared/hooks/useSearchPlanets';
 import { HomeContainer, PlanetBox, SearchBox } from './HomeCss';
 
-
 /**
  * Main page to show planets based on search
  */

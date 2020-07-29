@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// import { render } from '@testing-library/react';
 import React from 'react';
+import { shallow } from 'enzyme';
 
 import { Home } from './Home';
-import { render } from '@testing-library/react';
 
 jest.mock('../../shared/hooks/useSearchPlanets');
 
-// const mockUseSearchPlanets = jest.requireMock('useSearchPlanets') as jest.Mock<any>;
+
+// const mockUseSearchPlanets = useSearchPlanets as jest.Mocked<typeof useSearchPlanets>;
+
 
 describe('test cases for Home', () => {
-  it.skip('Home component renders correctly', () => {
-    const { asFragment } = render(<Home />);
-    expect(asFragment).toMatchSnapshot();
+  it('Home component renders Spinner on loading', () => {
+    const wrapper = shallow(<Home />);
+    expect(wrapper).toMatchSnapshot();
   });
 });

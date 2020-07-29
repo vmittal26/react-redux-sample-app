@@ -1,39 +1,28 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
-// import { FetchMock } from 'jest-fetch-mock';
-import { PlanetInfo, SearchState } from '../model';
-import { mockPlanets } from './../../__mocks__/mockPlanets';
+import MockAdapter from 'axios-mock-adapter';
+
+import { mockPlanets } from './../../__mocks__';
+import { getSearchApiUrl } from './../api/getSearchAPIURL';
 import { sortPlanets } from './../utils/sortPlanets';
-import useSearchPlanets from './useSearchPlanets';
+import useSearchPlanets, {
+  getLoadingState,
+  getSucessState
+} from './useSearchPlanets';
 
-const mockAxios = axios as jest.Mocked<typeof axios>;
-
-export const getLoadingState = (planets: PlanetInfo[] = []): SearchState => ({
-  isLoading: true,
-  planets,
-  error: []
-});
-
-export const getSucessState = (planets: PlanetInfo[]): SearchState => ({
-  isLoading: false,
-  planets,
-  error: []
-});
-
-export const getFailureState = (): SearchState => ({
-  isLoading: false,
-  planets: [],
-  error: ['error']
-});
+const mockAxios = new MockAdapter(axios);
 describe('test useSearchPlantes', () => {
-  it('make the server call and sets loading state and then returns success state', async () => {
-    // const mockFetch = fetch as FetchMock;
-    // const planets = JSON.stringify({ results: mockPlanets });
-    // mockFetch.mockResponse(planets);
-    sortPlanets(mockPlanets);
+  const mockSearchString = 'test';
+  const URL = getSearchApiUrl('test');
 
-    mockAxios.get.mockResolvedValueOnce({ data: { results: mockPlanets } });
-    const { result, waitForNextUpdate } = renderHook(() => useSearchPlanets('test'));
+  beforeAll(() => {
+    sortPlanets(mockPlanets);
+  });
+
+  it('makes the server call and sets loading state and then returns success state', async () => {
+    mockAxios.onGet(URL).reply(200, { results: mockPlanets });
+    const { result, waitForNextUpdate } = renderHook(() => useSearchPlanets(mockSearchString));
 
     expect(result.current).toEqual(getLoadingState());
     expect(result.current.isLoading).toBeTruthy();
@@ -44,19 +33,14 @@ describe('test useSearchPlantes', () => {
   });
 
   it('make the server call and sets loading state and then if error returns error state', async () => {
-    // const mockFetch = fetch as FetchMock;
-    // const planets = JSON.stringify({ results: mockPlanets });
-    // mockFetch.mockResponse(planets);
-    sortPlanets(mockPlanets);
-
-    mockAxios.get.mockRejectedValue('error');
-    const { result, waitForNextUpdate } = renderHook(() => useSearchPlanets('test'));
+    mockAxios.onGet(URL).reply(404, { results: mockPlanets });
+    const { result, waitForNextUpdate } = renderHook(() => useSearchPlanets(mockSearchString));
 
     expect(result.current).toEqual(getLoadingState());
     expect(result.current.isLoading).toBeTruthy();
     await waitForNextUpdate();
 
-    expect(result.current.error).toEqual([{ error: 'error' }]);
+    expect(result.current.error).toBeTruthy();
     expect(result.current.isLoading).toBeFalsy();
   });
 });

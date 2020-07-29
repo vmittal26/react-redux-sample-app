@@ -1,3 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test cases for Home Home component renders correctly 1`] = `[Function]`;
+exports[`test cases for Home Home component renders Spinner on loading 1`] = `
+<Styled(Card)>
+  <styled.div>
+    <FormControl
+      className="search"
+      onChange={[Function]}
+      placeholder="Search Planets"
+      type="text"
+    />
+  </styled.div>
+  <styled.div>
+    <Message
+      message="No planets found!"
+    />
+  </styled.div>
+</Styled(Card)>
+`;

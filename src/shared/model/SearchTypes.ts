@@ -3,5 +3,5 @@ import { PlanetInfo } from './PlanetInfo';
 export interface SearchState {
   isLoading: boolean;
   planets: PlanetInfo[];
-  error:any[]
+  error?:Error
 }
